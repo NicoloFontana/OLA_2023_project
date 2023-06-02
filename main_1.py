@@ -12,7 +12,7 @@ env = env.Environment(class_id)
 opt = env.optimal
 n_arms = env.n_arms
 
-n_experiments = 100
+n_experiments = 1000
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 
