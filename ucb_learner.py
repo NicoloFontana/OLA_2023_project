@@ -7,15 +7,16 @@ class UCBLearner(Learner):
         super().__init__(n_arms)
         self.empirical_means = np.zeros(n_arms)
         self.confidence = np.array([np.inf] * n_arms)
+        self.n_samples = np.zeros(n_arms)
 
     def pull_arm(self):
         upper_conf = self.empirical_means + self.confidence
         return np.random.choice(np.where(upper_conf == upper_conf.max())[0])
 
-    def update(self, pull_arm, reward):
+    def update(self, pulled_arm, reward):
         self.t += 1
-        self.empirical_means[pull_arm] = (self.empirical_means[pull_arm] * (self.t - 1) + reward) / self.t
+        self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * self.n_samples[pulled_arm] + reward[0]) / (self.n_samples[pulled_arm] + reward[0] +reward[1])
         for a in range(self.n_arms):
-            n_samples = len(self.rewards_per_arm[a])
-            self.confidence[a] = (2 * np.log(self.t) / n_samples) ** 0.5 if n_samples > 0 else np.inf
-        self.update_observations(pull_arm, reward)
+            self.confidence[a] = (2 * np.log(self.t) / self.n_samples[a]) ** 0.5 if self.n_samples[a] > 0 else np.inf
+        self.update_observations(pulled_arm, reward[2])
+        self.n_samples[pulled_arm] += reward[0] + reward[1]

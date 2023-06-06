@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import tslearner as ts
+import ts_learner as ts
 import ucb_learner as ucb
 import environment_1 as env
 
@@ -12,7 +12,7 @@ env = env.Environment(class_id)
 opt = env.optimal
 n_arms = env.n_arms
 
-n_experiments = 1000
+n_experiments = 100
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 

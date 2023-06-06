@@ -1,5 +1,6 @@
 from learner import *
 
+
 class TSLearner(Learner):
     def __init__(self, n_arms):
         """
@@ -27,8 +28,8 @@ class TSLearner(Learner):
         :param reward: (binary) reward obtained at the last time step
         """
         self.t += 1
-        self.update_observations(pulled_arm, reward)
+        self.update_observations(pulled_arm, reward[2])
         # Add the success (if any) to alpha
-        self.beta_parameters[pulled_arm, 0] = self.beta_parameters[pulled_arm, 0]+reward
+        self.beta_parameters[pulled_arm, 0] = self.beta_parameters[pulled_arm, 0] + reward[0]
         # Add the failure (if any) to beta (1-rew=1 iff rew=0 iff fail)
-        self.beta_parameters[pulled_arm, 1] = self.beta_parameters[pulled_arm, 1]+1.0 - reward
+        self.beta_parameters[pulled_arm, 1] = self.beta_parameters[pulled_arm, 1] + reward[1]
