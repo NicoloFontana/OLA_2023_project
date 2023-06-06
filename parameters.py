@@ -45,5 +45,5 @@ plt.plot(bids, cumulative_cost_per_bid_functions[1](bids), 'r')
 plt.show()
 cumulative_cost_per_bid_sigma = 10.0
 
-prices = [200, 250, 300, 350, 400]
+prices = np.array([200, 250, 300, 350, 400])
 cost = 150
