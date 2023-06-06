@@ -4,8 +4,8 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, ConstantKernel as C
 
 class GPTSLearner(Learner):
-    def __init__(self, n_arms, arms):
-        super().__init__(n_arms)
+    def __init__(self, arms):
+        super().__init__(arms.shape[0])
         self.arms = arms
         self.means = np.zeros(self.n_arms)
         self.sigmas = np.ones(self.n_arms)*10
