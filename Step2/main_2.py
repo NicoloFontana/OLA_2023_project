@@ -1,18 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import tslearner as ts
-import ucb_learner as ucb
-import environment_1 as env
+import environment_2 as env
+from gpts_optimizer import *
+from gpucb_optimizer import *
 
 
-T = 365
+T = 100
 
 class_id = 1
 env = env.Environment(class_id)
 opt = env.optimal
 n_arms = env.n_arms
 
-n_experiments = 1000
+n_experiments = 5
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 
@@ -24,23 +24,25 @@ cumreward_ucb = []
 
 for e in range (0,n_experiments):
     # Create environment and learners
-    ts_learner = ts.TSLearner(n_arms=n_arms)
-    ucb_learner = ucb.UCBLearner(n_arms=n_arms)
+    gpts_optimizer = GPTSOptimizer(param.bids, class_id=class_id)
+    gpucb_optimizer = GPUCBOptimizer(param.bids, class_id=class_id)
 
     for t in range (0,T):
         # Pull arms and update learners
         # Thompson sampling
-        pulled_arm = ts_learner.pull_arm()
+        if t % 10 == 0:
+            print(f"{t} of experiment {e}")
+        pulled_arm = gpts_optimizer.pull_arm()
         reward = env.round(pulled_arm)
-        ts_learner.update(pulled_arm, reward)
+        gpts_optimizer.update(pulled_arm, *reward)
 
         # UCB
-        pulled_arm = ucb_learner.pull_arm()
+        pulled_arm = gpucb_optimizer.pull_arm()
         reward = env.round(pulled_arm)
-        ucb_learner.update(pulled_arm, reward)
+        gpucb_optimizer.update(pulled_arm, *reward)
     # Store collected rewards
-    ts_rewards_per_experiment.append(ts_learner.collected_rewards)
-    ucb_rewards_per_experiment.append(ucb_learner.collected_rewards)
+    ts_rewards_per_experiment.append(gpts_optimizer.collected_rewards)
+    ucb_rewards_per_experiment.append(gpucb_optimizer.collected_rewards)
 
     cumregret_ts.append(np.cumsum(opt - ts_rewards_per_experiment[e]))
     cumregret_ucb.append(np.cumsum(opt - ucb_rewards_per_experiment[e]))
