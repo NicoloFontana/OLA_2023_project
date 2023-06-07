@@ -1,18 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import environment_2 as env
-from gpts_optimizer import *
-from gpucb_optimizer import *
+from Step3 import environment_3 as env
+from Step3.gpts_and_price_optimizer import *
+from Step3.gpucb_and_price_optimizer import *
+from Step3.optimizer_learner import *
 
-
+np.random.seed(param.seed)
 T = 100
+n_classes = 3
 
-class_id = 1
-env = env.Environment(class_id)
-opt = env.optimal
-n_arms = env.n_arms
+envs = [env.Environment(class_id) for class_id in range(1,n_classes+1)]
+opts = [env.optimal for env in envs]
+opt = sum(opts)
 
-n_experiments = 5
+n_experiments = 3
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 
@@ -24,25 +25,30 @@ cumreward_ucb = []
 
 for e in range (0,n_experiments):
     # Create environment and learners
-    gpts_optimizer = GPTSOptimizer(param.bids, class_id=class_id)
-    gpucb_optimizer = GPUCBOptimizer(param.bids, class_id=class_id)
+    gpts_and_price_optimizers = [GPTSAndPriceOptimizer(param.bids, param.prices, class_id) for class_id in range(1,n_classes+1)]
+    gpucb_and_price_optimizers = [GPUCBAndPriceOptimizer(param.bids, param.prices, class_id) for class_id in range(1,n_classes+1)]
 
     for t in range (0,T):
         # Pull arms and update learners
         # Thompson sampling
         if t % 10 == 0:
             print(f"{t} of experiment {e}")
-        pulled_arm = gpts_optimizer.pull_arm()
-        reward = env.round(pulled_arm)
-        gpts_optimizer.update(pulled_arm, *reward)
+        for class_id in range(n_classes):
+            pulled_arms = gpts_and_price_optimizers[class_id].pull_arms()
+            pulled_bids_arm = pulled_arms[0]
+            pulled_prices_arm = pulled_arms[1]
+            round_reward = envs[class_id].round(pulled_bids_arm, pulled_prices_arm)
+            gpts_and_price_optimizers[class_id].update(pulled_bids_arm, pulled_prices_arm, *round_reward)
 
-        # UCB
-        pulled_arm = gpucb_optimizer.pull_arm()
-        reward = env.round(pulled_arm)
-        gpucb_optimizer.update(pulled_arm, *reward)
+            # UCB
+            pulled_arms = gpucb_and_price_optimizers[class_id].pull_arms()
+            pulled_bids_arm = pulled_arms[0]
+            pulled_prices_arm = pulled_arms[1]
+            round_reward = envs[class_id].round(pulled_bids_arm, pulled_prices_arm)
+            gpucb_and_price_optimizers[class_id].update(pulled_bids_arm, pulled_prices_arm, *round_reward)
     # Store collected rewards
-    ts_rewards_per_experiment.append(gpts_optimizer.collected_rewards)
-    ucb_rewards_per_experiment.append(gpucb_optimizer.collected_rewards)
+    ts_rewards_per_experiment.append(sum(gpts_and_price_optimizers[class_id].collected_rewards for class_id in range(n_classes)))
+    ucb_rewards_per_experiment.append(sum(gpucb_and_price_optimizers[class_id].collected_rewards for class_id in range(n_classes)))
 
     cumregret_ts.append(np.cumsum(opt - ts_rewards_per_experiment[e]))
     cumregret_ucb.append(np.cumsum(opt - ucb_rewards_per_experiment[e]))
@@ -52,7 +58,6 @@ for e in range (0,n_experiments):
 
 
 plt.figure(0)
-plt.title(f"Step2 - Class {class_id}")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
 plt.plot(np.mean(cumregret_ts, axis=0), 'r')
@@ -63,7 +68,6 @@ plt.legend(["TS","UCB"])
 plt.show()
 
 plt.figure(1)
-plt.title(f"Step2 - Class {class_id}")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Regret")
 plt.plot(np.mean(opt - ts_rewards_per_experiment, axis=0), 'r')
@@ -74,7 +78,6 @@ plt.legend(["TS","UCB"])
 plt.show()
 
 plt.figure(2)
-plt.title(f"Step2 - Class {class_id}")
 plt.xlabel("t")
 plt.ylabel("Cumulative Reward")
 plt.plot(np.mean(cumreward_ts, axis=0), 'r')
@@ -85,7 +88,6 @@ plt.legend(["TS","UCB"])
 plt.show()
 
 plt.figure(3)
-plt.title(f"Step2 - Class {class_id}")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Reward")
 plt.plot(np.mean(ts_rewards_per_experiment, axis=0), 'r')

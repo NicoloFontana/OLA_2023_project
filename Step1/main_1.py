@@ -7,7 +7,7 @@ import environment_1 as env
 
 T = 365
 
-class_id = 1
+class_id = 2
 env = env.Environment(class_id)
 opt = env.optimal
 n_arms = env.n_arms
@@ -50,6 +50,7 @@ for e in range (0,n_experiments):
 
 
 plt.figure(0)
+plt.title(f"Step1 - Class {class_id}")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
 plt.plot(np.mean(cumregret_ts, axis=0), 'r')
@@ -60,6 +61,7 @@ plt.legend(["TS","UCB"])
 plt.show()
 
 plt.figure(1)
+plt.title(f"Step1 - Class {class_id}")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Regret")
 plt.plot(np.mean(opt - ts_rewards_per_experiment, axis=0), 'r')
@@ -70,6 +72,7 @@ plt.legend(["TS","UCB"])
 plt.show()
 
 plt.figure(2)
+plt.title(f"Step1 - Class {class_id}")
 plt.xlabel("t")
 plt.ylabel("Cumulative Reward")
 plt.plot(np.mean(cumreward_ts, axis=0), 'r')
@@ -80,6 +83,7 @@ plt.legend(["TS","UCB"])
 plt.show()
 
 plt.figure(3)
+plt.title(f"Step1 - Class {class_id}")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Reward")
 plt.plot(np.mean(ts_rewards_per_experiment, axis=0), 'r')

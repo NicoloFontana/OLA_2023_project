@@ -1,7 +1,6 @@
 import parameters as param
 import numpy as np
 
-
 class Environment:
     def __init__(self, class_id):
         self.class_id = class_id

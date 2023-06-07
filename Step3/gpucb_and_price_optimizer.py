@@ -1,5 +1,5 @@
 import numpy as np
-from optimizer_learner import *
+from Step3.optimizer_learner import *
 from gpucb_learner import *
 import parameters as param
 from ts_learner import *

@@ -1,5 +1,6 @@
 from learner import *
 import numpy as np
+import parameters as param
 
 
 class UCBLearner(Learner):
@@ -10,7 +11,7 @@ class UCBLearner(Learner):
         self.n_samples = np.zeros(n_arms)
 
     def pull_arm(self):
-        upper_conf = self.empirical_means + self.confidence
+        upper_conf = (self.empirical_means + self.confidence)*(param.prices - param.cost)
         return np.random.choice(np.where(upper_conf == upper_conf.max())[0])
 
     def update(self, pulled_arm, reward):

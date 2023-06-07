@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 pricing_probabilities = {
     1: np.array([0.18, 0.22, 0.35, 0.20, 0.10]), # middle class
-    2: np.array([0.05, 0.30, 0.20, 0.15, 0.23]), # mid-high class
+    2: np.array([0.05, 0.30, 0.20, 0.15, 0.25]), # mid-high class
     3: np.array([0.15, 0.13, 0.11, 0.19, 0.28]), # high class
 }
 # plt.figure(0)
@@ -47,3 +47,4 @@ cumulative_cost_per_bid_sigma = 10.0
 
 prices = np.array([200, 250, 300, 350, 400])
 cost = 150
+seed = 42

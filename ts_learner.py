@@ -1,4 +1,5 @@
 from learner import *
+import parameters as param
 
 
 class TSLearner(Learner):
@@ -17,7 +18,7 @@ class TSLearner(Learner):
 
         :return: number of the arm to pull
         """
-        idx = np.argmax(np.random.beta(self.beta_parameters[:, 0], self.beta_parameters[:, 1]))
+        idx = np.argmax(np.random.beta(self.beta_parameters[:, 0], self.beta_parameters[:, 1])*(param.prices-param.cost))
         return idx
 
     def update(self, pulled_arm, reward):

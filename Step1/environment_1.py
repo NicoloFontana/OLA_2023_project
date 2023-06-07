@@ -15,5 +15,5 @@ class Environment:
 
     def round(self, pulled_arm):
         result = np.random.binomial(1, self.probabilities[pulled_arm], self.n_clicks[self.optimal_bid_idx])
-        reward = np.sum(result) * (param.prices[pulled_arm] - param.cost) - self.cumcosts[self.optimal_bid_idx]
+        reward = np.sum(result) * (param.prices[pulled_arm] - param.cost) - self.cum_costs[self.optimal_bid_idx]
         return np.sum(result), self.n_clicks[self.optimal_bid_idx] - np.sum(result), reward
