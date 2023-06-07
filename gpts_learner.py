@@ -10,8 +10,8 @@ class GPTSLearner(Learner):
         self.means = np.zeros(self.n_arms)
         self.sigmas = np.ones(self.n_arms)*10
         self.pulled_arms = []
-        alpha = 10.0
-        kernel = C(1.0, (1e-3, 1e3)) * RBF(1.0, (1e-3, 1e3))
+        alpha = 1.0
+        kernel = RBF(1.0, (1e-3, 1e3))
         self.gp = GaussianProcessRegressor(kernel=kernel, alpha=alpha**2, normalize_y=True, n_restarts_optimizer=9)
 
     def update_observations(self, pulled_arm, reward):

@@ -5,7 +5,7 @@ from gpts_optimizer import *
 from gpucb_optimizer import *
 
 
-T = 50
+T = 100
 
 class_id = 1
 env = env.Environment(class_id)
@@ -30,6 +30,8 @@ for e in range (0,n_experiments):
     for t in range (0,T):
         # Pull arms and update learners
         # Thompson sampling
+        if t % 10 == 0:
+            print(f"{t} of experiment {e}")
         pulled_arm = gpts_optimizer.pull_arm()
         reward = env.round(pulled_arm)
         gpts_optimizer.update(pulled_arm, *reward)
