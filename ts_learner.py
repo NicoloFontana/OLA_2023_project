@@ -37,6 +37,6 @@ class TSLearner(Learner):
 
     def update_bulk(self, pulled_arms, rewards):
         for i, arm in enumerate(pulled_arms):
-            self.update(arm, rewards[i])
+            self.update(arm, [rewards[0][i], rewards[1][i], rewards[2][i]])
 
 

@@ -5,7 +5,7 @@ bids = np.linspace(0.03, 3, 100)
 prices = np.array([200, 250, 300, 350, 400])
 cost = 150
 seed = 42
-features = ['00', '01', '10', '11']
+feature_combos = ['00', '01', '10', '11']
 features_names = ["F1", "F2"]
 confidence = 0.95
 
