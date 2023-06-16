@@ -34,3 +34,9 @@ class TSLearner(Learner):
         self.beta_parameters[pulled_arm, 0] = self.beta_parameters[pulled_arm, 0] + reward[0]
         # Add the failure (if any) to beta (1-rew=1 iff rew=0 iff fail)
         self.beta_parameters[pulled_arm, 1] = self.beta_parameters[pulled_arm, 1] + reward[1]
+
+    def update_bulk(self, pulled_arms, rewards):
+        for i, arm in enumerate(pulled_arms):
+            self.update(arm, rewards[i])
+
+

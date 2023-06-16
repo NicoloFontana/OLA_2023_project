@@ -6,6 +6,8 @@ prices = np.array([200, 250, 300, 350, 400])
 cost = 150
 seed = 42
 features = ['00', '01', '10', '11']
+features_names = ["F1", "F2"]
+confidence = 0.95
 
 pricing_probabilities = {
     1: np.array([0.18, 0.22, 0.35, 0.20, 0.10]), # middle class 00-01

@@ -23,8 +23,8 @@ cumreward_ucb = []
 
 for e in range (0,n_experiments):
     # Create environment and learners
-    gpts_and_price_optimizer = GPTSAndPriceOptimizer(param.bids, param.prices, class_id=class_id)
-    gpucb_and_price_optimizer = GPUCBAndPriceOptimizer(param.bids, param.prices, class_id=class_id)
+    gpts_and_price_optimizer = GPTSAndPriceOptimizer(param.bids, param.prices)
+    gpucb_and_price_optimizer = GPUCBAndPriceOptimizer(param.bids, param.prices)
 
     for t in range (0,T):
         # Pull arms and update learners

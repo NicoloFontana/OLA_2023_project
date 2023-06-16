@@ -4,14 +4,15 @@ from Step3 import environment_3 as env
 from Step3.gpts_and_price_optimizer import *
 from Step3.gpucb_and_price_optimizer import *
 from Step3.optimizer_learner import *
+from ts_context_optimizer import *
 
 np.random.seed(param.seed)
 T = 100
 n_features = len(param.features)
 
-envs = [env.Environment(feature) for feature in param.features]
-opts = [env.optimal for env in envs]
-opt = sum(opts)
+envs = {feature: env.Environment(feature) for feature in param.features}
+opts = {feature: envs[feature].optimal for feature in param.features}
+opt = sum(opts.values())
 
 n_experiments = 3
 ts_rewards_per_experiment = []
@@ -25,27 +26,20 @@ cumreward_ucb = []
 
 for e in range (0,n_experiments):
     # Create environment and learners
-    gpts_and_price_optimizers = [GPTSAndPriceOptimizer(param.bids, param.prices, class_id) for class_id in range(1,n_classes+1)]
-    gpucb_and_price_optimizers = [GPUCBAndPriceOptimizer(param.bids, param.prices, class_id) for class_id in range(1,n_classes+1)]
+    ts_context_optimizer = TSContextOptimizer()
+
 
     for t in range (0,T):
         # Pull arms and update learners
-        # Thompson sampling
         if t % 10 == 0:
             print(f"{t} of experiment {e}")
-        for class_id in range(n_classes):
-            pulled_arms = gpts_and_price_optimizers[class_id].pull_arms()
-            pulled_bids_arm = pulled_arms[0]
-            pulled_prices_arm = pulled_arms[1]
-            round_reward = envs[class_id].round(pulled_bids_arm, pulled_prices_arm)
-            gpts_and_price_optimizers[class_id].update(pulled_bids_arm, pulled_prices_arm, *round_reward)
 
-            # UCB
-            pulled_arms = gpucb_and_price_optimizers[class_id].pull_arms()
-            pulled_bids_arm = pulled_arms[0]
-            pulled_prices_arm = pulled_arms[1]
-            round_reward = envs[class_id].round(pulled_bids_arm, pulled_prices_arm)
-            gpucb_and_price_optimizers[class_id].update(pulled_bids_arm, pulled_prices_arm, *round_reward)
+        pulled_arms_per_feature = ts_context_optimizer.pull_arms()
+        optimizer_update_input ={}
+        for feature in pulled_arms_per_feature.keys():
+            optimizer_update_input[feature] = pulled_arms_per_feature + envs[feature].round(*pulled_arms_per_feature[feature])
+        ts_context_optimizer.update(optimizer_update_input)
+
     # Store collected rewards
     ts_rewards_per_experiment.append(sum(gpts_and_price_optimizers[class_id].collected_rewards for class_id in range(n_classes)))
     ucb_rewards_per_experiment.append(sum(gpucb_and_price_optimizers[class_id].collected_rewards for class_id in range(n_classes)))

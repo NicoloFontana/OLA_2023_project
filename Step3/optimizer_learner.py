@@ -11,3 +11,6 @@ class OptimizerLearner:
 
     def update_observations(self, reward):
         self.collected_rewards = np.append(self.collected_rewards, reward)
+
+    def update_observations_bulk(self, rewards):
+        self.update_observations(rewards)

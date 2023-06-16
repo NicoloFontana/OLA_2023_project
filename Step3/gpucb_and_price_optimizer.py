@@ -6,12 +6,11 @@ from ts_learner import *
 
 
 class GPUCBAndPriceOptimizer(OptimizerLearner):
-    def __init__(self, bids_arms, prices_arms, class_id):
+    def __init__(self, bids_arms, prices_arms):
         super().__init__(bids_arms, prices_arms)
         self.n_click_learner = GPUCBLearner(bids_arms)
         self.cum_cost_learner = GPUCBLearner(bids_arms)
         self.price_learner = TSLearner(len(prices_arms))
-        self.class_id = class_id
 
     def update(self, pulled_bids_arm, pulled_prices_arm, n_conversions, n_clicks, cum_cost, reward):
         self.update_observations(reward)
