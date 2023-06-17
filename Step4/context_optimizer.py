@@ -8,14 +8,14 @@ class ContextOptimizer:
     def __init__(self, optimizer_type):
         self.context_generator = ContextGenerator(param.features_names, param.feature_combos)
         self.optimizer_type = optimizer_type
-        # self.rm_per_context = {
-        #    tuple(param.feature_combos): self.optimizer_type(param.bids, param.prices)
-        #}
         self.rm_per_context = {
-            ('00', '01'): self.optimizer_type(param.bids, param.prices),
-            ('10',): self.optimizer_type(param.bids, param.prices),
-            ('11',): self.optimizer_type(param.bids, param.prices)
+            tuple(param.feature_combos): self.optimizer_type(param.bids, param.prices)
         }
+        # self.rm_per_context = {
+        #     ('00', '01'): self.optimizer_type(param.bids, param.prices),
+        #     ('10',): self.optimizer_type(param.bids, param.prices),
+        #     ('11',): self.optimizer_type(param.bids, param.prices)
+        # }
         self.T = 0
         self.collected_rewards = []
 
@@ -44,8 +44,8 @@ class ContextOptimizer:
             [tuple(feature) + input_per_feature[feature] for feature in input_per_feature.keys()])
         # generate contexts
         if self.T % 14 == 0:
-            # context_structure = [tuple(i) for i in self.context_generator.get_context()]
-            context_structure = [('00', '01'), ('10',), ('11',)]
+            context_structure = [tuple(i) for i in self.context_generator.get_context()]
+            # context_structure = [('00', '01'), ('10',), ('11',)]
             keys = list(self.rm_per_context.keys()).copy()
             print(f"context {context_structure}")
             print(f"previous context {keys}")
