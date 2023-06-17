@@ -55,16 +55,6 @@ class ContextGenerator:
         features_names_to_be_split = features.copy()
         if samples is None:
             samples = self.samples
-            # empirical_mean_per_arm = samples.groupby(['bid', 'price'])[
-            #     'reward'].mean().to_numpy()
-            # empirical_std_per_arm = samples.groupby(['bid', 'price'])[
-            #     'reward'].std().fillna(np.infty).to_numpy()
-            # n_samples_per_arm = samples.groupby(['bid', 'price'])['reward'].count().to_numpy()
-            # print("mu0:")
-            # print(f"mean {empirical_mean_per_arm}, std {empirical_std_per_arm}, n_samples {n_samples_per_arm}")
-            # lower_bound_mean = np.max(empirical_mean_per_arm - 1.96 * empirical_std_per_arm / np.sqrt(n_samples_per_arm))
-            # # lower_bound_mean = np.max(empirical_mean_per_arm - empirical_std_per_arm)
-
             conversion_per_price = samples.groupby(['price'])['n_conversions'].sum().astype(float)
             n_clicks_per_price = samples.groupby(['price'])['n_clicks'].sum().astype(float)
             conversion_rate_per_price = conversion_per_price.divide(n_clicks_per_price).astype(float)
@@ -82,7 +72,6 @@ class ContextGenerator:
                 1e6).to_numpy() / np.sqrt(cum_costs_per_bid.size().to_numpy())
             lower_bound_mean = np.max(
                 (lb_pricing_probability * n_clicks_per_bid_lb * margin - cum_costs_per_bid_lb) / n_clicks_per_bid_lb)
-            print(f"lower bound: {lower_bound_mean}")
         max_split_value = -np.infty
         max_feature = None
         max_filtered_samples_0 = None
@@ -92,21 +81,10 @@ class ContextGenerator:
         for feature in features:
             # filter df
             filtered_samples_per_feature_0 = samples.copy().loc[samples[feature] == '0']
-            print(f"Feature {feature}:\n")
-            print("mu1:")
             lower_bounds_0 = self.get_lower_bounds(filtered_samples_per_feature_0, samples)
-            print(f"lower bound: {lower_bounds_0[1]}")
             filtered_samples_per_feature_1 = samples.copy().loc[samples[feature] == '1']
-            print("mu2:")
             lower_bounds_1 = self.get_lower_bounds(filtered_samples_per_feature_1, samples)
-            print(f"lower bound: {lower_bounds_1[1]}")
-            print(f"lower bounds: {lower_bound_mean}, {lower_bounds_0[1]}, {lower_bounds_1[1]}")
-            # print(lower_bounds_0, lower_bounds_1)
             split_value = lower_bounds_0[0] * lower_bounds_0[1] + lower_bounds_1[0] * lower_bounds_1[1]
-            # print(f"Feature {feature}: \n"
-            #       f"p1={lower_bounds_0[0]}, mu1={lower_bounds_0[1]}, p1*mu1={lower_bounds_0[0]*lower_bounds_0[1]}\n"
-            #       f"p2={lower_bounds_1[0]}, mu2={lower_bounds_1[1]}, p2*mu2={lower_bounds_1[0]*lower_bounds_1[1]}\n"
-            #       f"mu0={lower_bound_mean}")
             if split_value >= lower_bound_mean and split_value > max_split_value:
                 max_split_value = split_value
                 max_filtered_samples_0 = filtered_samples_per_feature_0.copy()
@@ -158,19 +136,6 @@ class ContextGenerator:
                                           lb_pricing_probability * n_clicks_per_bid_lb * margin - cum_costs_per_bid_lb) / n_clicks_per_bid_lb
         return lb_probability, np.max(reward_mean_per_bid)
 
-        # lb_probability = len(filtered_samples.index) / len(total_samples.index) - np.sqrt(
-        #     -np.log(param.confidence) / (2 * len(filtered_samples.index)))
-        # grouped_rewards = filtered_samples.groupby(['bid', 'price'])['reward']
-        # empirical_mean_per_arm = grouped_rewards.mean().to_numpy()
-        # empirical_std_per_arm = grouped_rewards.std().fillna(np.infty).to_numpy()
-        # n_samples_per_arm = filtered_samples.groupby(['bid', 'price']).size().to_numpy()
-        # # print(f"get_lower_bounds(): n_samples_per_arm={n_samples_per_arm}")
-        # print(f"mean {empirical_mean_per_arm}, \nstd {empirical_std_per_arm}, \nn_samples {n_samples_per_arm}")
-        # lb_reward = empirical_mean_per_arm - 1.96 * empirical_std_per_arm / np.sqrt(n_samples_per_arm)
-        # # lb_reward = empirical_mean_per_arm - empirical_std_per_arm
-        # return lb_probability, np.max(lb_reward)
-        # # return lb_probability, np.max(empirical_mean_per_arm)
-
     def get_samples(self, context):
         filtered_samples = pd.DataFrame(
             columns=[*self.features_names, 'bid', 'price', 'n_conversions', 'n_clicks', 'cum_costs', 'reward'])
@@ -182,5 +147,3 @@ class ContextGenerator:
                     filtered_samples_per_feature[param.features_names[i]] == features[i]]
             filtered_samples = pd.concat([filtered_samples, filtered_samples_per_feature])
         return [filtered_samples[column].to_numpy() for column in filtered_samples.columns[2:]]
-
-        # return  pulled_bids_arms, pulled_prices_arms, n_conversions_per_arm, n_clicks_per_arm, cum_cost_per_arm, reward_per_arm

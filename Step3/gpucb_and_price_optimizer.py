@@ -18,6 +18,12 @@ class GPUCBAndPriceOptimizer(OptimizerLearner):
         self.cum_cost_learner.update(pulled_bids_arm, cum_cost)
         self.price_learner.update(pulled_prices_arm, [n_conversions, n_clicks - n_conversions, reward])
 
+    def update_bulk(self, pulled_bids_arms, pulled_prices_arms, n_conversions_per_arm, n_clicks_per_arm, cum_cost_per_arm, reward_per_arm):
+        self.update_observations_bulk(reward_per_arm)
+        self.n_click_learner.update_bulk(pulled_bids_arms, n_clicks_per_arm)
+        self.cum_cost_learner.update_bulk(pulled_bids_arms, cum_cost_per_arm)
+        self.price_learner.update_bulk(pulled_prices_arms, [n_conversions_per_arm, n_clicks_per_arm - n_conversions_per_arm, reward_per_arm])
+
     def pull_arms(self):
         sampled_price_idx = self.price_learner.pull_arm()
         n_clicks_upper_conf = self.n_click_learner.empirical_means + self.n_click_learner.confidence

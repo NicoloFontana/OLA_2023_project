@@ -10,9 +10,9 @@ features_names = ["F1", "F2"]
 confidence = 0.95
 
 pricing_probabilities = {
-    1: np.array([0.18, 0.22, 0.35, 0.20, 0.10]),  # middle class 00-01
-    2: np.array([0.05, 0.30, 0.20, 0.15, 0.25]),  # mid-high class 10
-    3: np.array([0.15, 0.13, 0.11, 0.19, 0.28]),  # high class 11
+    1: np.array([0.05, 0.35, 0.15, 0.10, 0.13]),  # middle class 00-01
+    2: np.array([0.18, 0.22, 0.35, 0.20, 0.10]),  # mid-high class 10
+    3: np.array([0.15, 0.13, 0.11, 0.19, 0.26]),  # high class 11
 }
 
 class_from_feature = {
