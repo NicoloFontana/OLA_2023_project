@@ -18,6 +18,10 @@ class GPTSLearner(Learner):
         super().update_observations(pulled_arm, reward)
         self.pulled_arms.append(self.arms[pulled_arm])
 
+    def update_observations_bulk(self, pulled_arms, rewards):
+        for sample in range(len(pulled_arms)):
+            self.update_observations(pulled_arms[sample], rewards[sample])
+
     def update_model(self):
         x = np.atleast_2d(self.pulled_arms).T
         y = self.collected_rewards
@@ -30,6 +34,13 @@ class GPTSLearner(Learner):
         self.update_observations(pulled_arm, reward)
         self.update_model()
 
+    def update_bulk(self, pulled_arms, rewards):
+        self.t += len(pulled_arms)
+        self.update_observations_bulk(pulled_arms, rewards)
+        self.update_model()
+
+
     def pull_arm(self):
         sampled_values = np.random.normal(self.means, self.sigmas)
         return np.argmax(sampled_values)
+

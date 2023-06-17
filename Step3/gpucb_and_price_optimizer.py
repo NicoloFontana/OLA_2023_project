@@ -6,18 +6,23 @@ from ts_learner import *
 
 
 class GPUCBAndPriceOptimizer(OptimizerLearner):
-    def __init__(self, bids_arms, prices_arms, class_id):
+    def __init__(self, bids_arms, prices_arms):
         super().__init__(bids_arms, prices_arms)
         self.n_click_learner = GPUCBLearner(bids_arms)
         self.cum_cost_learner = GPUCBLearner(bids_arms)
         self.price_learner = TSLearner(len(prices_arms))
-        self.class_id = class_id
 
     def update(self, pulled_bids_arm, pulled_prices_arm, n_conversions, n_clicks, cum_cost, reward):
         self.update_observations(reward)
         self.n_click_learner.update(pulled_bids_arm, n_clicks)
         self.cum_cost_learner.update(pulled_bids_arm, cum_cost)
         self.price_learner.update(pulled_prices_arm, [n_conversions, n_clicks - n_conversions, reward])
+
+    def update_bulk(self, pulled_bids_arms, pulled_prices_arms, n_conversions_per_arm, n_clicks_per_arm, cum_cost_per_arm, reward_per_arm):
+        self.update_observations_bulk(reward_per_arm)
+        self.n_click_learner.update_bulk(pulled_bids_arms, n_clicks_per_arm)
+        self.cum_cost_learner.update_bulk(pulled_bids_arms, cum_cost_per_arm)
+        self.price_learner.update_bulk(pulled_prices_arms, [n_conversions_per_arm, n_clicks_per_arm - n_conversions_per_arm, reward_per_arm])
 
     def pull_arms(self):
         sampled_price_idx = self.price_learner.pull_arm()
