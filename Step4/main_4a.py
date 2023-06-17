@@ -12,8 +12,6 @@ n_classes = 3
 envs = [env.Environment(class_id) for class_id in range(1, n_classes+1)]
 opts = [env.optimal for env in envs]
 opt = sum(opts)
-print(opts)
-print(opt)
 
 n_experiments = 3
 ts_rewards_per_experiment = []

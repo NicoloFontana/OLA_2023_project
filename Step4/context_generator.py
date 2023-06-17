@@ -36,17 +36,13 @@ class ContextGenerator:
                             class_list.append(class_name_list_0)
                             class_list.append(class_name_list_1)
                             class_list.remove(class_name_list)
-                            print(class_list)
                 else:
                     if len(class_list) == 0:
                         class_list = [[str(dictionary[param.features_names[i]])]]
                     else:
                         for class_name_list in class_list:
                             class_name_list.append(str(dictionary[param.features_names[i]]))
-                            print(class_name_list)
             context_list.append([''.join(class_name_list) for class_name_list in class_list])
-        print(f"dict {context_dict}")
-        print(f"list {context_list}")
         return context_list
 
     def get_context_recursive(self, features=param.features_names, samples=None, lower_bound_mean=None):
