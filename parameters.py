@@ -10,9 +10,9 @@ features_names = ["F1", "F2"]
 confidence = 0.95
 
 pricing_probabilities = {
-    1: np.array([0.18, 0.22, 0.35, 0.20, 0.10]), # middle class 00-01
-    2: np.array([0.05, 0.30, 0.20, 0.15, 0.25]), # mid-high class 10
-    3: np.array([0.15, 0.13, 0.11, 0.19, 0.28]), # high class 11
+    1: np.array([0.18, 0.22, 0.35, 0.20, 0.10]),  # middle class 00-01
+    2: np.array([0.05, 0.30, 0.20, 0.15, 0.25]),  # mid-high class 10
+    3: np.array([0.15, 0.13, 0.11, 0.19, 0.28]),  # high class 11
 }
 
 class_from_feature = {
@@ -36,15 +36,15 @@ features_from_class = {
 # plt.show()
 
 n_clicks_per_bid_by_class = {
-    1: lambda x:np.sum(n_clicks_per_bid_by_feature[feature](x) for feature in features_from_class[1]),
-    2: lambda x:np.sum(n_clicks_per_bid_by_feature[feature](x) for feature in features_from_class[2]),
-    3: lambda x:np.sum(n_clicks_per_bid_by_feature[feature](x) for feature in features_from_class[3]),
+    1: lambda x: np.sum(n_clicks_per_bid_by_feature[feature](x) for feature in features_from_class[1]),
+    2: lambda x: np.sum(n_clicks_per_bid_by_feature[feature](x) for feature in features_from_class[2]),
+    3: lambda x: np.sum(n_clicks_per_bid_by_feature[feature](x) for feature in features_from_class[3]),
 }
 n_clicks_per_bid_by_feature = {
-    '00': lambda x:0.5*((1-np.exp(-x*1.5))*100+10),
-    '01': lambda x:0.5*((1-np.exp(-x*1.5))*100+10),
-    '10': lambda x:(1-np.exp(-x*2))*50+7,
-    '11': lambda x:(1-np.exp(-x*2.5))*30+5,
+    '00': lambda x: 0.5 * ((1 - np.exp(-x * 1.5)) * 100 + 10),
+    '01': lambda x: 0.5 * ((1 - np.exp(-x * 1.5)) * 100 + 10),
+    '10': lambda x: (1 - np.exp(-x * 2)) * 50 + 7,
+    '11': lambda x: (1 - np.exp(-x * 2.5)) * 30 + 5,
 }
 # plt.figure(1)
 # plt.title("n_clicks_per_bid_functions")
@@ -56,15 +56,15 @@ n_clicks_per_bid_by_feature = {
 n_clicks_per_bid_sigma = 3.0
 
 cum_cost_per_bid_by_class = {
-    1: lambda x:np.sum(cum_cost_per_bid_by_feature[feature](x) for feature in features_from_class[1]),
-    2: lambda x:np.sum(cum_cost_per_bid_by_feature[feature](x) for feature in features_from_class[2]),
-    3: lambda x:np.sum(cum_cost_per_bid_by_feature[feature](x) for feature in features_from_class[3]),
+    1: lambda x: np.sum(cum_cost_per_bid_by_feature[feature](x) for feature in features_from_class[1]),
+    2: lambda x: np.sum(cum_cost_per_bid_by_feature[feature](x) for feature in features_from_class[2]),
+    3: lambda x: np.sum(cum_cost_per_bid_by_feature[feature](x) for feature in features_from_class[3]),
 }
 cum_cost_per_bid_by_feature = {
-    '00': lambda x:0.5*((1-np.exp(-x*1.5))*300+30),
-    '01': lambda x:0.5*((1-np.exp(-x*1.5))*300+30),
-    '10': lambda x:(1-np.exp(-x*2))*150+21,
-    '11': lambda x:(1-np.exp(-x*2.5))*90+15,
+    '00': lambda x: 0.5 * ((1 - np.exp(-x * 1.5)) * 300 + 30),
+    '01': lambda x: 0.5 * ((1 - np.exp(-x * 1.5)) * 300 + 30),
+    '10': lambda x: (1 - np.exp(-x * 2)) * 150 + 21,
+    '11': lambda x: (1 - np.exp(-x * 2.5)) * 90 + 15,
 }
 # plt.figure(1)
 # plt.title("cumulative_cost_per_bid_functions")

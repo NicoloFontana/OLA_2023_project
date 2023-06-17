@@ -8,8 +8,13 @@ class ContextOptimizer:
     def __init__(self, optimizer_type):
         self.context_generator = ContextGenerator(param.features_names, param.feature_combos)
         self.optimizer_type = optimizer_type
+        # self.rm_per_context = {
+        #    tuple(param.feature_combos): self.optimizer_type(param.bids, param.prices)
+        #}
         self.rm_per_context = {
-            tuple(param.feature_combos): self.optimizer_type(param.bids, param.prices)
+            ('00', '01'): self.optimizer_type(param.bids, param.prices),
+            ('10',): self.optimizer_type(param.bids, param.prices),
+            ('11',): self.optimizer_type(param.bids, param.prices)
         }
         self.T = 0
         self.collected_rewards = []
@@ -39,18 +44,23 @@ class ContextOptimizer:
             [tuple(feature) + input_per_feature[feature] for feature in input_per_feature.keys()])
         # generate contexts
         if self.T % 14 == 0:
-            context_structure = self.context_generator.get_context()
+            # context_structure = [tuple(i) for i in self.context_generator.get_context()]
+            context_structure = [('00', '01'), ('10',), ('11',)]
             keys = list(self.rm_per_context.keys()).copy()
+            print(f"context {context_structure}")
+            print(f"previous context {keys}")
             for context in keys:
                 if context not in context_structure:
+                    print(f"deleting {context}")
                     del self.rm_per_context[context]
             for context in context_structure:
                 if context not in keys:
+                    print(f"adding {tuple(context)}")
                     self.rm_per_context[tuple(context)] = self.optimizer_type(param.bids, param.prices)
                     # retrieve samples
                     samples = self.context_generator.get_samples(context)
-                    self.context_generator.samples = pd.DataFrame(
-                        columns=[*param.features_names, 'bid', 'price', 'n_conversions', 'n_clicks', 'cum_costs',
-                                 'reward'])
+                    # self.context_generator.samples = pd.DataFrame(
+                    #    columns=[*param.features_names, 'bid', 'price', 'n_conversions', 'n_clicks', 'cum_costs',
+                    #             'reward'])
                     # bulk update learner
-                    # self.rm_per_context[tuple(context)].update_bulk(*samples)
+                    self.rm_per_context[tuple(context)].update_bulk(*samples)
