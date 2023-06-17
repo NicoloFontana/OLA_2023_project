@@ -74,3 +74,17 @@ cum_cost_per_bid_by_feature = {
 # plt.plot(bids, cumulative_cost_per_bid_functions[3](bids), 'g')
 # plt.show()
 cum_cost_per_bid_sigma = 10.0
+
+pricing_probabilities_by_phase = {
+    1: np.array([0.05, 0.35, 0.15, 0.10, 0.13]),  # first phase
+    2: np.array([0.18, 0.22, 0.38, 0.20, 0.15]),  # second phase
+    3: np.array([0.28, 0.16, 0.12, 0.10, 0.06]),  # third phase
+}
+
+# plt.figure(0)
+# plt.title("pricing_probabilities step 5")
+# plt.legend(["normal period", "holiday period", "sales period"])
+# plt.plot(np.linspace(0, 5, 5), pricing_probabilities_by_phase[1], 'r')
+# plt.plot(np.linspace(0, 5, 5), pricing_probabilities_by_phase[2], 'b')
+# plt.plot(np.linspace(0, 5, 5), pricing_probabilities_by_phase[3], 'g')
+# plt.show()
