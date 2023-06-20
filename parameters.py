@@ -76,9 +76,15 @@ cum_cost_per_bid_by_feature = {
 cum_cost_per_bid_sigma = 10.0
 
 pricing_probabilities_by_phase = {
+    # 1: np.array([0.01, 0.99, 0.01, 0.01, 0.01]),
     1: np.array([0.05, 0.35, 0.15, 0.10, 0.13]),  # first phase
-    2: np.array([0.18, 0.22, 0.38, 0.20, 0.15]),  # second phase
+    # price*prob [2.5, 35, 22.5, 20, 32.5]
+    # 2: np.array([0.01, 0.01, 0.01, 0.01, 0.99]),
+    2: np.array([0.18, 0.20, 0.38, 0.22, 0.15]),  # second phase
+    # price*prob [9, 20, 57, 44, 37.5]
+    # 3: np.array([0.01, 0.01, 0.99, 0.01, 0.01]),
     3: np.array([0.28, 0.16, 0.12, 0.10, 0.06]),  # third phase
+    # price*prob [14, 16, 18, 20, 15]
 }
 
 # plt.figure(0)

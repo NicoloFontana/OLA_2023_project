@@ -7,7 +7,6 @@ import environment_5 as env
 
 
 T = 365
-window_size = int(2*(T ** 0.5))
 class_id = 1
 env = env.Environment(class_id, T)
 opt = np.array([env.get_opt(t) for t in range(T)])
@@ -26,11 +25,12 @@ cumreward_ucb = []
 cumreward_swucb = []
 cumreward_cusumucb = []
 
+# TODO: run with different parameters for window size and cusum parameters
 for e in range (0,n_experiments):
     # Create environment and learners
     ucb_learner = ucb.UCBLearner(n_arms=n_arms)
-    swucb_learner = swucb.SWUCBLearner(n_arms=n_arms, window_size=window_size)
-    cusum_ucb_learner = cu_ucb.CusumUCBLearner(n_arms)
+    swucb_learner = swucb.SWUCBLearner(n_arms=n_arms, window_size=int(3*(T ** 0.5)))
+    cusum_ucb_learner = cu_ucb.CusumUCBLearner(n_arms, M=5, eps=0.1, h=0.5*np.log(T), alpha=np.sqrt(0.5*np.log(T)/T))
 
     if e % 10 == 0:
         print(f"Experiment {e}")
@@ -63,6 +63,8 @@ for e in range (0,n_experiments):
     cumreward_ucb.append(np.cumsum(ucb_rewards_per_experiment[e]))
     cumreward_swucb.append(np.cumsum(swucb_rewards_per_experiment[e]))
     cumreward_cusumucb.append(np.cumsum(cusumucb_rewards_per_experiment[e]))
+
+    print(f"cusum changes: {cusum_ucb_learner.detections}")
 
 
 plt.figure(0)
