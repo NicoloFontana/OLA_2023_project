@@ -7,15 +7,13 @@ import environment_5 as env
 
 
 T = 365
-phase_size = int(T / 3)
-window_size = int(T ** 0.5)
-
-class_id = 2
+window_size = int(2*(T ** 0.5))
+class_id = 1
 env = env.Environment(class_id, T)
 opt = np.array([env.get_opt(t) for t in range(T)])
 n_arms = env.n_arms
 
-n_experiments = 500
+n_experiments = 100
 ucb_rewards_per_experiment = []
 swucb_rewards_per_experiment = []
 cusumucb_rewards_per_experiment = []
