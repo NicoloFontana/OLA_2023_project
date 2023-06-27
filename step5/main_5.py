@@ -26,16 +26,16 @@ cumreward_swucb = []
 cumreward_cusumucb = []
 
 # TODO: run with different parameters for window size and cusum parameters
-for e in range (0,n_experiments):
+for e in range(0, n_experiments):
     # Create environment and learners
     ucb_learner = ucb.UCBLearner(n_arms=n_arms)
-    swucb_learner = swucb.SWUCBLearner(n_arms=n_arms, window_size=int(3*(T ** 0.5)))
-    cusum_ucb_learner = cu_ucb.CusumUCBLearner(n_arms, M=5, eps=0.1, h=0.5*np.log(T), alpha=np.sqrt(0.5*np.log(T)/T))
+    swucb_learner = swucb.SWUCBLearner(n_arms=n_arms, window_size=int(7*(T ** 0.5)))
+    cusum_ucb_learner = cu_ucb.CusumUCBLearner(n_arms, M=70, eps=0.15, h=2*np.log(T), alpha=np.sqrt(0.5*np.log(T)/T))
 
     if e % 10 == 0:
         print(f"Experiment {e}")
 
-    for t in range (0,T):
+    for t in range(0, T):
         # Pull arms and update learners
         # UCB
         pulled_arm = ucb_learner.pull_arm()

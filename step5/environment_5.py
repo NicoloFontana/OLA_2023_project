@@ -25,7 +25,7 @@ class Environment:
         phase = min(math.floor(t / self.phase_size) + 1, self.n_phases)
         result = np.random.binomial(1, self.probabilities[phase][pulled_arm], self.n_clicks[self.optimal_bid_idx[phase]])
         reward = np.sum(result) * (param.prices[pulled_arm] - param.cost) - self.cum_costs[self.optimal_bid_idx[phase]]
-        return np.sum(result), self.n_clicks[self.optimal_bid_idx[phase]] - np.sum(result), reward
+        return np.sum(result), self.n_clicks[self.optimal_bid_idx[phase]] - np.sum(result), reward, result
 
     def get_opt(self, t):
         phase = min(math.floor(t / self.phase_size) + 1, self.n_phases)
