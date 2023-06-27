@@ -21,11 +21,11 @@ class Environment:
             self.optimal[phase] = np.max(self.probabilities[phase][self.optimal_price_idx[phase]] * self.n_clicks * (param.prices[self.optimal_price_idx[phase]] - param.cost) - self.cum_costs)
             self.optimal_bid_idx[phase] = np.argmax(self.probabilities[phase][self.optimal_price_idx[phase]] * self.n_clicks * (param.prices[self.optimal_price_idx[phase]] - param.cost) - self.cum_costs)
 
-    def round(self, pulled_arm, t):
+    def round(self, pulled_price_arm, pulled_bid_arm, t):
         phase = min(math.floor(t / self.phase_size) + 1, self.n_phases)
-        result = np.random.binomial(1, self.probabilities[phase][pulled_arm], self.n_clicks[self.optimal_bid_idx[phase]])
-        reward = np.sum(result) * (param.prices[pulled_arm] - param.cost) - self.cum_costs[self.optimal_bid_idx[phase]]
-        return np.sum(result), self.n_clicks[self.optimal_bid_idx[phase]] - np.sum(result), reward, result
+        result = np.random.binomial(1, self.probabilities[phase][pulled_price_arm], self.n_clicks[pulled_bid_arm])
+        reward = np.sum(result) * (param.prices[pulled_price_arm] - param.cost) - self.cum_costs[pulled_bid_arm]
+        return np.sum(result), self.n_clicks[pulled_bid_arm] - np.sum(result), reward, result
 
     def get_opt(self, t):
         phase = min(math.floor(t / self.phase_size) + 1, self.n_phases)
