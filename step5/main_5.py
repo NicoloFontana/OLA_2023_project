@@ -68,8 +68,6 @@ for e in range(0, n_experiments):
     cumreward_swucb.append(np.cumsum(swucb_rewards_per_experiment[e]))
     cumreward_cusumucb.append(np.cumsum(cusumucb_rewards_per_experiment[e]))
 
-    print(f"cusum changes: {cusum_ucb_learner.learner.detections}")
-
 plt.figure(0)
 plt.title(f"Step5 - Class {class_id}")
 plt.xlabel("t")
@@ -81,7 +79,7 @@ plt.fill_between(range(T), np.mean(cumregret_ucb, axis=0) - np.std(cumregret_ucb
                  np.mean(cumregret_ucb, axis=0) + np.std(cumregret_ucb, axis=0), color="blue", alpha=0.2)
 plt.fill_between(range(T), np.mean(cumregret_swucb, axis=0) - np.std(cumregret_swucb, axis=0),
                  np.mean(cumregret_swucb, axis=0) + np.std(cumregret_swucb, axis=0), color="red", alpha=0.2)
-plt.fill_between(range(T), np.mean(cumregret_swucb, axis=0) - np.std(cumregret_cusumucb, axis=0),
+plt.fill_between(range(T), np.mean(cumregret_cusumucb, axis=0) - np.std(cumregret_cusumucb, axis=0),
                  np.mean(cumregret_cusumucb, axis=0) + np.std(cumregret_cusumucb, axis=0), color="green", alpha=0.2)
 plt.legend(["UCB", "SW-UCB", "CUSUM-UCB"])
 plt.show()
