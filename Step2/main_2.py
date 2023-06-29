@@ -5,14 +5,14 @@ from gpts_optimizer import *
 from gpucb_optimizer import *
 
 
-T = 100
+T = 365
 
 class_id = 1
 env = env.Environment(class_id)
 opt = env.optimal
 n_arms = env.n_arms
 
-n_experiments = 5
+n_experiments = 10
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 
