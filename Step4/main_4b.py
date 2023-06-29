@@ -13,7 +13,7 @@ envs = {feature: env.Environment(feature) for feature in param.feature_combos}
 opts = {feature: envs[feature].optimal for feature in param.feature_combos}
 opt = sum(opts.values())
 
-n_experiments = 10
+n_experiments = 5
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 
