@@ -6,7 +6,7 @@ from Step3.gpucb_and_price_optimizer import *
 from context_optimizer import *
 
 np.random.seed(param.seed)
-T = 100
+T = 365
 n_features = len(param.feature_combos)
 
 envs = {feature: env.Environment(feature) for feature in param.feature_combos}
@@ -15,7 +15,7 @@ opt = sum(opts.values())
 print(opts.values())
 print(opt)
 
-n_experiments = 5
+n_experiments = 10
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 
@@ -60,6 +60,7 @@ for e in range(0, n_experiments):
     cumreward_ucb.append(np.cumsum(ucb_rewards_per_experiment[e]))
 
 plt.figure(0)
+plt.title(f"Step4 - Unknown contexts")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
 plt.plot(np.mean(cumregret_ts, axis=0), 'r')
@@ -72,6 +73,7 @@ plt.legend(["TS", "UCB"])
 plt.show()
 
 plt.figure(1)
+plt.title(f"Step4 - Unknown contexts")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Regret")
 plt.plot(np.mean(opt - ts_rewards_per_experiment, axis=0), 'r')
@@ -88,6 +90,7 @@ plt.legend(["TS", "UCB"])
 plt.show()
 
 plt.figure(2)
+plt.title(f"Step4 - Unknown contexts")
 plt.xlabel("t")
 plt.ylabel("Cumulative Reward")
 plt.plot(np.mean(cumreward_ts, axis=0), 'r')
@@ -100,6 +103,7 @@ plt.legend(["TS", "UCB"])
 plt.show()
 
 plt.figure(3)
+plt.title(f"Step4 - Unknown contexts")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Reward")
 plt.plot(np.mean(ts_rewards_per_experiment, axis=0), 'r')
