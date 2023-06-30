@@ -22,4 +22,4 @@ class GPUCBOptimizer(Learner):
         optimal_price_idx = np.argmax(param.pricing_probabilities[self.class_id] * (param.prices - param.cost))
         sampled_reward = param.pricing_probabilities[self.class_id][optimal_price_idx] * n_clicks_upper_conf * (
                     param.prices[optimal_price_idx] - param.cost) - cum_cost_lower_conf
-        return np.argmax(sampled_reward)
+        return np.random.choice(np.where(sampled_reward == sampled_reward.max())[0])
