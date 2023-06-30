@@ -7,7 +7,7 @@ import environment_1 as env
 
 T = 365
 
-class_id = 2
+class_id = 1
 env = env.Environment(class_id)
 opt = env.optimal
 n_arms = env.n_arms

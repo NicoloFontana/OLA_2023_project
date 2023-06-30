@@ -6,14 +6,14 @@ from Step3.gpucb_and_price_optimizer import *
 from Step3.optimizer_learner import *
 
 np.random.seed(param.seed)
-T = 100
+T = 365
 n_classes = 3
 
 envs = [env.Environment(class_id) for class_id in range(1, n_classes+1)]
 opts = [env.optimal for env in envs]
 opt = sum(opts)
 
-n_experiments = 3
+n_experiments = 10
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 
@@ -58,6 +58,7 @@ for e in range (0,n_experiments):
 
 
 plt.figure(0)
+plt.title(f"Step4 - Single known context")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
 plt.plot(np.mean(cumregret_ts, axis=0), 'r')
@@ -68,6 +69,7 @@ plt.legend(["TS","UCB"])
 plt.show()
 
 plt.figure(1)
+plt.title(f"Step4 - Single known context")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Regret")
 plt.plot(np.mean(opt - ts_rewards_per_experiment, axis=0), 'r')
@@ -78,6 +80,7 @@ plt.legend(["TS","UCB"])
 plt.show()
 
 plt.figure(2)
+plt.title(f"Step4 - Single known context")
 plt.xlabel("t")
 plt.ylabel("Cumulative Reward")
 plt.plot(np.mean(cumreward_ts, axis=0), 'r')
@@ -88,6 +91,7 @@ plt.legend(["TS","UCB"])
 plt.show()
 
 plt.figure(3)
+plt.title(f"Step4 - Single known context")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Reward")
 plt.plot(np.mean(ts_rewards_per_experiment, axis=0), 'r')

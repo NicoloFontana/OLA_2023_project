@@ -5,13 +5,13 @@ from gpts_and_price_optimizer import *
 from gpucb_and_price_optimizer import *
 
 np.random.seed(param.seed)
-T = 100
+T = 365
 
-class_id = 2
+class_id = 1
 env = env.Environment(class_id)
 opt = env.optimal
 
-n_experiments = 5
+n_experiments = 10
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 
