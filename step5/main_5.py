@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import swucb_learner as swucb
-import cusum_ucb_learner as cu_ucb
-import ucb_learner as ucb
+import swucb_optimizer as swucb
+import cusum_ucb_optimizer as cu_ucb
+import ucb_optimizer as ucb
 import environment_5 as env
 import ucb_optimizer as ucb_opt
 
@@ -32,9 +32,9 @@ cumreward_cusumucb = []
 
 for e in range(0, n_experiments):
     # Create environment and learners
-    ucb_learner = ucb_opt.UCBOptimizer(ucb.UCBLearner, class_id, (n_arms,))
-    swucb_learner = ucb_opt.UCBOptimizer(swucb.SWUCBLearner, class_id, (n_arms, window_size))
-    cusum_ucb_learner = ucb_opt.UCBOptimizer(cu_ucb.CusumUCBLearner, class_id, (n_arms, M, eps, h, alpha))
+    ucb_optimizer = ucb_opt.UCBOptimizer(ucb.UCBLearner, class_id, (n_arms,))
+    swucb_optimizer = ucb_opt.UCBOptimizer(swucb.SWUCBLearner, class_id, (n_arms, window_size))
+    cusum_ucb_optimizer = ucb_opt.UCBOptimizer(cu_ucb.CusumUCBLearner, class_id, (n_arms, M, eps, h, alpha))
 
     if e % 10 == 0:
         print(f"Experiment {e}")
@@ -42,23 +42,23 @@ for e in range(0, n_experiments):
     for t in range(0, T):
         # Pull arms and update learners
         # UCB
-        pulled_arm_price, pulled_arm_bid = ucb_learner.pull_arm()
+        pulled_arm_price, pulled_arm_bid = ucb_optimizer.pull_arm()
         reward = env.round(pulled_arm_price, pulled_arm_bid, t)
-        ucb_learner.update(pulled_arm_price, reward)
+        ucb_optimizer.update(pulled_arm_price, reward)
 
         # SW-UCB
-        pulled_arm_price, pulled_arm_bid = swucb_learner.pull_arm()
+        pulled_arm_price, pulled_arm_bid = swucb_optimizer.pull_arm()
         reward = env.round(pulled_arm_price, pulled_arm_bid, t)
-        swucb_learner.update(pulled_arm_price, reward)
+        swucb_optimizer.update(pulled_arm_price, reward)
 
         # Cusum-UCB
-        pulled_arm_price, pulled_arm_bid = cusum_ucb_learner.pull_arm()
+        pulled_arm_price, pulled_arm_bid = cusum_ucb_optimizer.pull_arm()
         reward = env.round(pulled_arm_price, pulled_arm_bid, t)
-        cusum_ucb_learner.update(pulled_arm_price, reward)
+        cusum_ucb_optimizer.update(pulled_arm_price, reward)
     # Store collected rewards
-    ucb_rewards_per_experiment.append(ucb_learner.collected_rewards)
-    swucb_rewards_per_experiment.append(swucb_learner.collected_rewards)
-    cusumucb_rewards_per_experiment.append(cusum_ucb_learner.collected_rewards)
+    ucb_rewards_per_experiment.append(ucb_optimizer.collected_rewards)
+    swucb_rewards_per_experiment.append(swucb_optimizer.collected_rewards)
+    cusumucb_rewards_per_experiment.append(cusum_ucb_optimizer.collected_rewards)
 
     cumregret_ucb.append(np.cumsum(opt - ucb_rewards_per_experiment[e]))
     cumregret_swucb.append(np.cumsum(opt - swucb_rewards_per_experiment[e]))
