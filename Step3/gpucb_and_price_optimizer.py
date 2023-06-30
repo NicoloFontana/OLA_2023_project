@@ -32,4 +32,4 @@ class GPUCBAndPriceOptimizer(OptimizerLearner):
                                                  self.price_learner.beta_parameters[sampled_price_idx, 1])
         sampled_reward = sampled_conversion_rate * n_clicks_upper_conf * (
                 param.prices[sampled_price_idx] - param.cost) - cum_cost_lower_conf
-        return np.argmax(sampled_reward), sampled_price_idx
+        return np.random.choice(np.where(sampled_reward == sampled_reward.max())[0]), sampled_price_idx
