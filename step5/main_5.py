@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import swucb_optimizer as swucb
-import cusum_ucb_optimizer as cu_ucb
-import ucb_optimizer as ucb
+import swucb_learner as swucb
+import cusum_ucb_learner as cu_ucb
+import ucb_learner as ucb
 import environment_5 as env
 import ucb_optimizer as ucb_opt
 
