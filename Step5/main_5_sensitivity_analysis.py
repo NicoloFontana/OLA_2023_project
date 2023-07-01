@@ -20,11 +20,11 @@ eps = 0.15
 h = np.log(T)
 alpha = np.sqrt(0.5 * np.log(T) / T)
 
-Ms = [1, 2, 3, 10, 50, 200, 1000000000000]
-epss = [0.03, 0.1, 0.2]
-hs = np.array([0.1, 1, 10]) * np.log(T)
-alphas = np.sqrt(np.array([0.1, 1, 10])) * np.sqrt(np.log(T) / T)
-window_sizes = np.array([int(1 * (T ** 0.5)), int(2 * (T ** 0.5)), int(4 * (T ** 0.5)), int(8 * (T ** 0.5))])
+M_values = [3, 10, 50, 200]
+eps_values = [0.01, 0.05, 0.1, 0.25]
+h_values = np.array([0.1, 1, 2, 10]) * np.log(T)
+alpha_values = np.sqrt(np.array([0.1, 1, 10])) * np.sqrt(np.log(T) / T)
+window_size_values = np.array([int(1 * (T ** 0.5)), int(2 * (T ** 0.5)), int(4 * (T ** 0.5)), int(8 * (T ** 0.5))])
 
 n_experiments = 100
 
@@ -32,7 +32,7 @@ plt.figure(0)
 plt.title(f"Step5 - Cusum, h={'{:.2f}'.format(h)}, eps={'{:.2f}'.format(eps)}, alpha={'{:.2f}'.format(alpha)}")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
-for M_ in Ms:
+for M_ in M_values:
     cusum_ucb_rewards_per_experiment_per_parameters = []
     cumregret_cusum_ucb_per_parameters = []
     for e in range(0, n_experiments):
@@ -58,7 +58,7 @@ plt.figure(1)
 plt.title(f"Step5 - Cusum, M={M}, eps={'{:.2f}'.format(eps)}, alpha={'{:.2f}'.format(alpha)}")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
-for h_ in hs:
+for h_ in h_values:
     cusum_ucb_rewards_per_experiment_per_parameters = []
     cumregret_cusum_ucb_per_parameters = []
     for e in range(0, n_experiments):
@@ -83,7 +83,7 @@ plt.figure(2)
 plt.title(f"Step5 - Cusum, M={M}, h={'{:.2f}'.format(h)}, alpha={'{:.2f}'.format(alpha)}")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
-for eps_ in epss:
+for eps_ in eps_values:
     cusum_ucb_rewards_per_experiment_per_parameters = []
     cumregret_cusum_ucb_per_parameters = []
     for e in range(0, n_experiments):
@@ -108,7 +108,7 @@ plt.figure(3)
 plt.title(f"Step5 - Cusum, M={M}, h={'{:.2f}'.format(h)}, eps={'{:.2f}'.format(eps)}")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
-for alpha_ in alphas:
+for alpha_ in alpha_values:
     cusum_ucb_rewards_per_experiment_per_parameters = []
     cumregret_cusum_ucb_per_parameters = []
     for e in range(0, n_experiments):
@@ -133,7 +133,7 @@ plt.figure(4)
 plt.title("Step5 - Sliding Window")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
-for window_size in window_sizes:
+for window_size in window_size_values:
     swucb_rewards_per_experiment_per_parameters = []
     cumregret_swucb_per_parameters = []
     for e in range(0, n_experiments):
