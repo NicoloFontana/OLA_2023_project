@@ -13,7 +13,7 @@ envs = {feature: env.Environment(feature) for feature in param.feature_combos}
 opts = {feature: envs[feature].optimal for feature in param.feature_combos}
 opt = sum(opts.values())
 
-n_experiments = 3
+n_experiments = 5
 ts_rewards_per_experiment = []
 ucb_rewards_per_experiment = []
 gpts_rewards_per_experiment = []
@@ -101,7 +101,7 @@ for e in range(0, n_experiments):
     cumreward_gpucb.append(np.cumsum(gpucb_rewards_per_experiment[e]))
 
 plt.figure(0)
-plt.title(f"Step4 - Unknown contexts")
+plt.title("Step4 - Unknown contexts")
 plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
 plt.plot(np.mean(cumregret_ts, axis=0), 'r')
@@ -116,11 +116,11 @@ plt.fill_between(range(T), np.mean(cumregret_gpts, axis=0) - np.std(cumregret_gp
                  np.mean(cumregret_gpts, axis=0) + np.std(cumregret_gpts, axis=0), color="green", alpha=0.2)
 plt.fill_between(range(T), np.mean(cumregret_gpucb, axis=0) - np.std(cumregret_gpucb, axis=0),
                  np.mean(cumregret_gpucb, axis=0) + np.std(cumregret_gpucb, axis=0), color="yellow", alpha=0.2)
-plt.legend(["TS context", "UCB contex", "TS", "UCB"])
+plt.legend(["TS context", "UCB context", "TS", "UCB"])
 plt.show()
 
 plt.figure(1)
-plt.title(f"Step4 - Unknown contexts")
+plt.title("Step4 - Unknown contexts")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Regret")
 plt.plot(np.mean(opt - ts_rewards_per_experiment, axis=0), 'r')
@@ -143,11 +143,11 @@ plt.fill_between(range(T),
                  np.mean(opt - gpucb_rewards_per_experiment, axis=0) - np.std(opt - gpucb_rewards_per_experiment, axis=0),
                  np.mean(opt - gpucb_rewards_per_experiment, axis=0) + np.std(opt - gpucb_rewards_per_experiment, axis=0),
                  color="yellow", alpha=0.2)
-plt.legend(["TS context", "UCB contex", "TS", "UCB"])
+plt.legend(["TS context", "UCB context", "TS", "UCB"])
 plt.show()
 
 plt.figure(2)
-plt.title(f"Step4 - Unknown contexts")
+plt.title("Step4 - Unknown contexts")
 plt.xlabel("t")
 plt.ylabel("Cumulative Reward")
 plt.plot(np.mean(cumreward_ts, axis=0), 'r')
@@ -162,11 +162,11 @@ plt.fill_between(range(T), np.mean(cumreward_gpts, axis=0) - np.std(cumreward_gp
                  np.mean(cumreward_gpts, axis=0) + np.std(cumreward_gpts, axis=0), color="green", alpha=0.2)
 plt.fill_between(range(T), np.mean(cumreward_gpucb, axis=0) - np.std(cumreward_gpucb, axis=0),
                  np.mean(cumreward_gpucb, axis=0) + np.std(cumreward_gpucb, axis=0), color="yellow", alpha=0.2)
-plt.legend(["TS context", "UCB contex", "TS", "UCB"])
+plt.legend(["TS context", "UCB context", "TS", "UCB"])
 plt.show()
 
 plt.figure(3)
-plt.title(f"Step4 - Unknown contexts")
+plt.title("Step4 - Unknown contexts")
 plt.xlabel("t")
 plt.ylabel("Instantaneous Reward")
 plt.plot(np.mean(ts_rewards_per_experiment, axis=0), 'r')
@@ -185,5 +185,5 @@ plt.fill_between(range(T), np.mean(gpts_rewards_per_experiment, axis=0) - np.std
 plt.fill_between(range(T), np.mean(gpucb_rewards_per_experiment, axis=0) - np.std(gpucb_rewards_per_experiment, axis=0),
                  np.mean(gpucb_rewards_per_experiment, axis=0) + np.std(gpucb_rewards_per_experiment, axis=0), color="yellow",
                  alpha=0.2)
-plt.legend(["TS context", "UCB contex", "TS", "UCB"])
+plt.legend(["TS context", "UCB context", "TS", "UCB"])
 plt.show()
