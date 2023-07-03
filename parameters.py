@@ -97,8 +97,8 @@ pricing_probabilities_by_phase = {
 pricing_probabilities_by_phase_6b = {
     1: np.array([0.05, 0.35, 0.15, 0.10, 0.13]),  # first phase
     # price*prob [ 2.5, 35. , 22.5, 20. , 32.5]
-    2: np.array([0.45, 0.15, 0.65, 0.50, 0.26]),  # second phase
-    # price*prob [ 22.5,  15. ,  97.5, 100. ,  65. ]
+    2: np.array([0.45, 0.15, 0.55, 0.33, 0.26]),  # second phase
+    # price*prob [22.5, 15. , 83.5, 66. , 65. ]
     3: np.array([0.28, 0.16, 0.12, 0.10, 0.06]),  # third phase
     # price*prob [14., 16., 18., 20., 15.]
     4: np.array([0.85, 0.35, 0.25, 0.05, 0.10]),  # fourth phase
