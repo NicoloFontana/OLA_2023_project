@@ -13,3 +13,4 @@ Students:
 
 This repo contains a folder for each step of the project proposal. Each folder contains Python files declaring classes and a main, according to what is requested by the proposal.
 In the root folder, additional Python files are included, whose functionality is shared among the steps.
+In the delivery folder, there are the report and the submission slides, both in a full, complete version and in a short version.
