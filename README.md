@@ -1,5 +1,5 @@
 # OLA_2023_project
-
+# Team 13
 This is the repository for the project Pricing and Advertising for the course Online Learning Applications at Politecnico di Milano, A.Y. 2022/2023
 
 Students:
