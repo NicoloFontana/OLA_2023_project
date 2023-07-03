@@ -1,7 +1,7 @@
 from ucb_learner import UCBLearner
 import numpy as np
 import parameters as param
-from change_detection_cusum import Cusum
+from Step5.change_detection_cusum import Cusum
 
 
 class CusumUCBLearner(UCBLearner):
